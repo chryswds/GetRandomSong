@@ -1,5 +1,4 @@
 const express = require("express");
-let { userAccessToken } = require("./spotifyConfig");
 
 const app = express();
 
@@ -10,9 +9,20 @@ async function getArtists() {
     `https://api.spotify.com/v1/artists/2xvtxDNInKDV4AvGmjw6d1`,
     {
       headers: {
-        AUTHORIZATION:
-          `Bearer ` +
-          "BQB3kYbMkXU3VF0AE7rqp7MMk2JxBnGbWOLBh9QI1e1-ZCm6VQ7xV1Fz7YeFhm8ynmchZ52IOnNxlnEh_JF9jdFSqwksybPyxkR579nx8KUXqVFO0cQ",
+        AUTHORIZATION: `Bearer BQB3kYbMkXU3VF0AE7rqp7MMk2JxBnGbWOLBh9QI1e1-ZCm6VQ7xV1Fz7YeFhm8ynmchZ52IOnNxlnEh_JF9jdFSqwksybPyxkR579nx8KUXqVFO0cQ`,
+      },
+    }
+  );
+  const response = await data.json();
+  return response;
+}
+
+async function getAlbum() {
+  let data = await fetch(
+    `https://api.spotify.com/v1/albums/4n1tg05JN5EY0k7FRRcAir`,
+    {
+      headers: {
+        AUTHORIZATION: `Bearer BQB3kYbMkXU3VF0AE7rqp7MMk2JxBnGbWOLBh9QI1e1-ZCm6VQ7xV1Fz7YeFhm8ynmchZ52IOnNxlnEh_JF9jdFSqwksybPyxkR579nx8KUXqVFO0cQ`,
       },
     }
   );
