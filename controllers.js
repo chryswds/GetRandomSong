@@ -3,10 +3,8 @@ require("dotenv").config();
 const accessToken = process.env.ACCESS_TOKEN;
 
 const mainPage = (req, res) => {
-  res.sendFile(path, join(__dirname, "/index.html"));
+  res.sendFile(path.join(__dirname, "/index.html"));
 };
-
-
 
 const fetchName = async () => {
   const response = await fetch(
@@ -29,8 +27,6 @@ const returnName = async (req, res) => {
     res.json({ error: error.message });
   }
 };
-
-
 
 const fetchImage = async () => {
   const response = await fetch(
