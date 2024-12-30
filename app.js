@@ -1,8 +1,8 @@
 const express = require("express");
 
-import { accessToken } from "./spotifyConfig";
-
 const app = express();
+require("dotenv").config();
+const accessToken = process.env.ACCESS_TOKEN;
 
 app.use(express.json());
 
@@ -15,8 +15,8 @@ async function getArtists() {
       },
     }
   );
-  const response = await data.json();
-  return response;
+  const actualData = await data.json();
+  return actualData;
 }
 
 async function getAlbum() {
