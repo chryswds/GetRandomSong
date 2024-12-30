@@ -1,5 +1,7 @@
 const express = require("express");
 
+import { accessToken } from "./spotifyConfig";
+
 const app = express();
 
 app.use(express.json());
@@ -9,7 +11,7 @@ async function getArtists() {
     `https://api.spotify.com/v1/artists/2xvtxDNInKDV4AvGmjw6d1`,
     {
       headers: {
-        AUTHORIZATION: `Bearer BQB3kYbMkXU3VF0AE7rqp7MMk2JxBnGbWOLBh9QI1e1-ZCm6VQ7xV1Fz7YeFhm8ynmchZ52IOnNxlnEh_JF9jdFSqwksybPyxkR579nx8KUXqVFO0cQ`,
+        AUTHORIZATION: `Bearer ` + accessToken,
       },
     }
   );
@@ -22,7 +24,7 @@ async function getAlbum() {
     `https://api.spotify.com/v1/albums/4n1tg05JN5EY0k7FRRcAir`,
     {
       headers: {
-        AUTHORIZATION: `Bearer BQB3kYbMkXU3VF0AE7rqp7MMk2JxBnGbWOLBh9QI1e1-ZCm6VQ7xV1Fz7YeFhm8ynmchZ52IOnNxlnEh_JF9jdFSqwksybPyxkR579nx8KUXqVFO0cQ`,
+        AUTHORIZATION: `Bearer ` + accessToken,
       },
     }
   );
