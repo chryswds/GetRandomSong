@@ -32,8 +32,8 @@ const returnName = async (req, res) => {
 const returnImage = async (req, res) => {
   try {
     const artist = await fetchArtist();
-    const image = artist.images[0].url;
-    res.send("<img src = " + image + " width=300 >");
+    const image = artist.images[1].url;
+    res.send("<img src = " + image + ">");
   } catch (error) {
     res.json({ error: error.message });
   }
