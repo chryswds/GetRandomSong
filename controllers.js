@@ -29,12 +29,11 @@ const returnName = async (req, res) => {
     console.log("error, ", error);
   }
 };
-
 const returnImage = async (req, res) => {
   try {
     const artist = await fetchArtist();
-    const image = artist.images[0];
-    res.json(image);
+    const image = artist.images[0].url;
+    res.send("<img src = " + image + " width=300 >");
   } catch (error) {
     res.json({ error: error.message });
   }
