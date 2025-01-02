@@ -15,7 +15,12 @@
     </form>
 
     <div>
-      <form method="GET" action="/artist">
+      <form
+        method="GET"
+        enctype="application/x-www-form-urlencoded"
+        action="/artist"
+      >
+        <label for="searchValue">Search Artist</label>
         <input
           type="searchValue"
           id="searchValue"
