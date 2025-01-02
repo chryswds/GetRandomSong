@@ -11,17 +11,19 @@ const generateUserToken = async () => {
     method: "POST",
     body: new URLSearchParams({
       grant_type: "client_credentials",
-      client_id: "ec597fbf6a2044f3b9db050f5f9c5bd2",
-      client_secret: "032486bee42948e7af9badc58974697b",
+      client_id: process.env.CLIENT_ID,
+      client_secret: process.env.CLIENT_SECRET,
     }),
   });
   const acT = await response.json();
+  console.log(acT);
   return acT;
 };
 const userToken = async () => {
   try {
     const valid = await generateUserToken();
     const userTK = valid.access_token;
+    console.log(userTK);
     return userTK;
   } catch (error) {
     console.log("error, ", error);
@@ -33,7 +35,7 @@ const fetchArtist = async () => {
     `https://api.spotify.com/v1/artists/2xvtxDNInKDV4AvGmjw6d1`,
     {
       headers: {
-        AUTHORIZATION: `Bearer ` + userToken(),
+        AUTHORIZATION: `Bearer ` + (await userToken()),
         "Content-Type": "application/json",
       },
     }
@@ -61,4 +63,9 @@ const returnImage = async (req, res) => {
   }
 };
 
-module.exports = { mainPage, userToken, returnName, returnImage };
+module.exports = {
+  mainPage,
+  userToken,
+  returnName,
+  returnImage,
+};
