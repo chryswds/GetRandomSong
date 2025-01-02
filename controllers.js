@@ -1,6 +1,5 @@
 const path = require("path");
 require("dotenv").config();
-const accessToken = process.env.ACCESS_TOKEN;
 
 const mainPage = (req, res) => {
   res.sendFile(path.join(__dirname, "/index.html"));
@@ -25,6 +24,29 @@ const userToken = async () => {
     const userTK = valid.access_token;
     console.log(userTK);
     return userTK;
+  } catch (error) {
+    console.log("error, ", error);
+  }
+};
+
+const fetchSearchArtist = async () => {
+  const response = await fetch(
+    `https://api.spotify.com/v1/search?q=${artistSearch}&type=artist`,
+    {
+      headers: {
+        AUTHORIZATION: `Bearer ` + (await userToken()),
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const artist = await response.json();
+  return artist;
+};
+const returnSearch = async (req, res) => {
+  try {
+    const search = await fetchSearchArtist();
+    const searchName = search.name;
+    res.json(searchName);
   } catch (error) {
     console.log("error, ", error);
   }
