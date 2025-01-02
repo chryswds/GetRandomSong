@@ -6,6 +6,11 @@ routes.get("/", controllers.mainPage);
 
 routes.get("/artist", controllers.returnSearch);
 
+routes.get("/test", (req, res) => {
+  console.log("Query:", req.query);
+  res.send("Check the server console for the query parameters.");
+});
+
 routes.get("/name", controllers.returnName);
 
 routes.get("/image", controllers.returnImage);

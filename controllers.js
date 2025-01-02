@@ -30,19 +30,18 @@ const userToken = async () => {
 };
 
 const fetchSearchArtist = async (req, res) => {
-  const artistSearch = req.body;
+  const { searchArtist } = req.query;
 
-  const search = artistSearch;
+  const url = "https://api.spotify.com/v1/search?";
+  const query = `q=${searchArtist}&type=artist&limit=1`;
+  const queryUrl = url + query;
 
-  const response = await fetch(
-    `https://api.spotify.com/v1/search?q=${search}&type=artist`,
-    {
-      headers: {
-        AUTHORIZATION: `Bearer ` + (await userToken()),
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const response = await fetch(queryUrl, {
+    headers: {
+      AUTHORIZATION: `Bearer ` + (await userToken()),
+      "Content-Type": "application/json",
+    },
+  });
   const artist = await response.json();
   return artist;
 };
