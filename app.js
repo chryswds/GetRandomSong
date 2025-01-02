@@ -1,6 +1,6 @@
 const express = require("express");
 const routes = require("./routes");
-const { userToken } = require("./controllers");
+const { userToken, returnSearch } = require("./controllers");
 const app = express();
 app.use(express.json());
 app.use(routes);

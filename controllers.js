@@ -29,7 +29,8 @@ const userToken = async () => {
   }
 };
 
-const fetchSearchArtist = async () => {
+const fetchSearchArtist = async (req, res) => {
+  const { artistSearch } = req.body.searchValue;
   const response = await fetch(
     `https://api.spotify.com/v1/search?q=${artistSearch}&type=artist`,
     {
@@ -46,6 +47,7 @@ const returnSearch = async (req, res) => {
   try {
     const search = await fetchSearchArtist();
     const searchName = search.name;
+    console.log(searchName);
     res.json(searchName);
   } catch (error) {
     console.log("error, ", error);
@@ -90,4 +92,5 @@ module.exports = {
   userToken,
   returnName,
   returnImage,
+  returnSearch,
 };
