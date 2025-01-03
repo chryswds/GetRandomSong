@@ -56,23 +56,38 @@ const fetchSearchArtist = async (req, res) => {
       );
     }
     const data = await response.json();
-    res.json(data.artists);
+    const dataItems = data.artists.items;
+    for (const name of dataItems) {
+      res.json(name.name);
+    }
   } catch (error) {
     console.error("Error searching for artist: ", error);
     res.status(500).send("An error occurred while searching");
   }
 };
 
-const returnSearch = async (req, res) => {
-  try {
-    const search = await fetchSearchArtist();
-    const searchName = search.artists.name;
-    console.log(searchName);
-    res.json(searchName);
-  } catch (error) {
-    console.log("error, ", error);
-  }
-};
+// const returnSearch = async (req, res) => {
+//   try {
+//     const search = await fetchSearchArtist();
+//     for (const name of search) {
+//       res.json(name.name);
+//       console.log(name.name);
+//     }
+//   } catch (error) {
+//     console.log("error, ", error);
+//   }
+// };
+
+// const returnSearch = async (req, res) => {
+//   try {
+//     const search = await fetchSearchArtist();
+//     const searchName = search.artists.name;
+//     console.log(searchName);
+//     res.json(searchName);
+//   } catch (error) {
+//     console.log("error, ", error);
+//   }
+// };
 
 const fetchArtist = async () => {
   const response = await fetch(
@@ -111,6 +126,6 @@ module.exports = {
   userToken,
   returnName,
   returnImage,
-  returnSearch,
+  // returnSearch,
   fetchSearchArtist,
 };
