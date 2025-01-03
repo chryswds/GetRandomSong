@@ -66,12 +66,21 @@ const returnSearch = async (req, res) => {
   try {
     const dataItems = await searchArtist(req);
     for (const name of dataItems) {
-      res.json(name.name);
+      res.send(`<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title></title><body><div class="container">
+      <div class="center">
+        <p class="artist">${name.name}</p>
+    </div></body></html>`);
     }
   } catch (error) {
     res.json({ error: error.message });
   }
 };
+
 const fetchArtist = async () => {
   const response = await fetch(
     `https://api.spotify.com/v1/artists/2xvtxDNInKDV4AvGmjw6d1`,
@@ -100,6 +109,5 @@ module.exports = {
   mainPage,
   userToken,
   returnImage,
-  searchArtist,
   returnSearch,
 };
