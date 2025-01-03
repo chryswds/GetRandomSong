@@ -63,6 +63,7 @@ const searchArtist = async (req, res) => {
   }
 };
 const returnSearch = async (req, res) => {
+  const imgURL = await returnImage();
   try {
     const dataItems = await searchArtist(req);
     for (const name of dataItems) {
@@ -73,6 +74,7 @@ const returnSearch = async (req, res) => {
     <link rel="stylesheet" href="styles.css" />
     <title></title><body><div class="container">
       <div class="center">
+        <img src="${imgURL}/>
         <p class="artist">${name.name}</p>
     </div></body></html>`);
     }
@@ -81,9 +83,22 @@ const returnSearch = async (req, res) => {
   }
 };
 
+const returnID = async (req, res) => {
+  try {
+    const dataItems = await searchArtist(req);
+    for (const ID of dataItems) {
+      console.log(ID.id);
+      return ID.id;
+    }
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
+
 const fetchArtist = async () => {
+  const artistID = await returnID();
   const response = await fetch(
-    `https://api.spotify.com/v1/artists/2xvtxDNInKDV4AvGmjw6d1`,
+    `https://api.spotify.com/v1/artists/${artistID}`,
     {
       headers: {
         AUTHORIZATION: `Bearer ` + (await userToken()),
@@ -99,7 +114,7 @@ const returnImage = async (req, res) => {
   try {
     const artist = await fetchArtist();
     const image = artist.images[1].url;
-    res.send("<img src = " + image + ">");
+    return image;
   } catch (error) {
     res.json({ error: error.message });
   }
