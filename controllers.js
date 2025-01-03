@@ -29,7 +29,7 @@ const userToken = async () => {
   }
 };
 
-const searchArtistName = async (req, res) => {
+const searchArtist = async (req, res) => {
   const searchValue = req.query.searchValue;
 
   if (!searchValue) {
@@ -56,16 +56,22 @@ const searchArtistName = async (req, res) => {
       );
     }
     const data = await response.json();
-    const dataItems = data.artists.items;
-    for (const name of dataItems) {
-      res.json(name.name);
-    }
+    return data.artists.items;
   } catch (error) {
     console.error("Error searching for artist: ", error);
     res.status(500).send("An error occurred while searching");
   }
 };
-
+const returnSearch = async (req, res) => {
+  try {
+    const dataItems = await searchArtist(req);
+    for (const name of dataItems) {
+      res.json(name.name);
+    }
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
 const fetchArtist = async () => {
   const response = await fetch(
     `https://api.spotify.com/v1/artists/2xvtxDNInKDV4AvGmjw6d1`,
@@ -94,5 +100,6 @@ module.exports = {
   mainPage,
   userToken,
   returnImage,
-  searchArtistName,
+  searchArtist,
+  returnSearch,
 };

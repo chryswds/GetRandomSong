@@ -4,7 +4,7 @@ const controllers = require("./controllers");
 
 routes.get("/", controllers.mainPage);
 
-routes.get("/artist", controllers.searchArtistName);
+routes.get("/artist", controllers.returnSearch);
 
 routes.get("/image", controllers.returnImage);
 
