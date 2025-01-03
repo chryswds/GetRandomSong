@@ -4,7 +4,7 @@ const controllers = require("./controllers");
 
 routes.get("/", controllers.mainPage);
 
-routes.get("/artist", controllers.returnSearch);
+routes.get("/artist", controllers.fetchSearchArtist);
 
 routes.get("/test", (req, res) => {
   console.log("Query:", req.query);

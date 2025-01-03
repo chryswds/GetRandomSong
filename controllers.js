@@ -94,4 +94,5 @@ module.exports = {
   returnName,
   returnImage,
   returnSearch,
+  fetchSearchArtist
 };
