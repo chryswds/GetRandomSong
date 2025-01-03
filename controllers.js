@@ -29,7 +29,7 @@ const userToken = async () => {
   }
 };
 
-const fetchSearchArtist = async (req, res) => {
+const searchArtistName = async (req, res) => {
   const searchValue = req.query.searchValue;
 
   if (!searchValue) {
@@ -66,29 +66,6 @@ const fetchSearchArtist = async (req, res) => {
   }
 };
 
-// const returnSearch = async (req, res) => {
-//   try {
-//     const search = await fetchSearchArtist();
-//     for (const name of search) {
-//       res.json(name.name);
-//       console.log(name.name);
-//     }
-//   } catch (error) {
-//     console.log("error, ", error);
-//   }
-// };
-
-// const returnSearch = async (req, res) => {
-//   try {
-//     const search = await fetchSearchArtist();
-//     const searchName = search.artists.name;
-//     console.log(searchName);
-//     res.json(searchName);
-//   } catch (error) {
-//     console.log("error, ", error);
-//   }
-// };
-
 const fetchArtist = async () => {
   const response = await fetch(
     `https://api.spotify.com/v1/artists/2xvtxDNInKDV4AvGmjw6d1`,
@@ -102,15 +79,7 @@ const fetchArtist = async () => {
   const artist = await response.json();
   return artist;
 };
-const returnName = async (req, res) => {
-  try {
-    const artist = await fetchArtist();
-    const name = artist.name;
-    res.json(name);
-  } catch (error) {
-    console.log("error, ", error);
-  }
-};
+
 const returnImage = async (req, res) => {
   try {
     const artist = await fetchArtist();
@@ -124,8 +93,6 @@ const returnImage = async (req, res) => {
 module.exports = {
   mainPage,
   userToken,
-  returnName,
   returnImage,
-  // returnSearch,
-  fetchSearchArtist,
+  searchArtistName,
 };
