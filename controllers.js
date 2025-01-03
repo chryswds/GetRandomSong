@@ -63,20 +63,24 @@ const searchArtist = async (req, res) => {
   }
 };
 const returnSearch = async (req, res) => {
-  const imgURL = await returnImage();
   try {
-    const dataItems = await searchArtist(req);
+    const dataItems = await searchArtist(req, res);
     for (const name of dataItems) {
+      const imgURL = await returnImage(req, res);
       res.send(`<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
-    <title></title><body><div class="container">
+    <title>ARTIST</title><body>
+    <div class="container">
       <div class="center">
-        <img src="${imgURL}/>
         <p class="artist">${name.name}</p>
-    </div></body></html>`);
+        <img class="img" src="${imgURL}"/>
+      </div>
+    </div>
+    </body>
+    `);
     }
   } catch (error) {
     res.json({ error: error.message });
@@ -85,7 +89,7 @@ const returnSearch = async (req, res) => {
 
 const returnID = async (req, res) => {
   try {
-    const dataItems = await searchArtist(req);
+    const dataItems = await searchArtist(req, res);
     for (const ID of dataItems) {
       console.log(ID.id);
       return ID.id;
@@ -95,25 +99,35 @@ const returnID = async (req, res) => {
   }
 };
 
-const fetchArtist = async () => {
-  const artistID = await returnID();
-  const response = await fetch(
-    `https://api.spotify.com/v1/artists/${artistID}`,
-    {
-      headers: {
-        AUTHORIZATION: `Bearer ` + (await userToken()),
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  const artist = await response.json();
-  return artist;
+const fetchArtist = async (req, res) => {
+  const artistID = await returnID(req, res);
+
+  if (!artistID) {
+    return res.status(400).send("No ID found");
+  }
+  try {
+    const response = await fetch(
+      `https://api.spotify.com/v1/artists/${artistID}`,
+      {
+        headers: {
+          AUTHORIZATION: `Bearer ` + (await userToken()),
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const artist = await response.json();
+    return artist;
+  } catch (error) {
+    console.error("Error searching for artist ID: ", error);
+    res.status(500).send("An error occurred while searching ID");
+  }
 };
 
 const returnImage = async (req, res) => {
   try {
-    const artist = await fetchArtist();
+    const artist = await fetchArtist(req, res);
     const image = artist.images[1].url;
+    console.log(image);
     return image;
   } catch (error) {
     res.json({ error: error.message });
