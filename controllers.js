@@ -30,21 +30,39 @@ const userToken = async () => {
 };
 
 const fetchSearchArtist = async (req, res) => {
-  const { searchArtist } = req.query;
+  const searchValue = req.query.searchValue;
 
-  const url = "https://api.spotify.com/v1/search?";
-  const query = `q=${searchArtist}&type=artist&limit=1`;
-  const queryUrl = url + query;
+  if (!searchValue) {
+    return res.status(400).send("No search value");
+  }
 
-  const response = await fetch(queryUrl, {
-    headers: {
-      AUTHORIZATION: `Bearer ` + (await userToken()),
-      "Content-Type": "application/json",
-    },
-  });
-  const artist = await response.json();
-  return artist;
+  try {
+    const token = await userToken();
+
+    const response = await fetch(
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(
+        searchValue
+      )}&type=artist&limit=1`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error(
+        `Spotify API Error: ${response.statusText} (${response.status})`
+      );
+    }
+    const data = await response.json();
+    res.json(data.artists);
+  } catch (error) {
+    console.error("Error searching for artist: ", error);
+    res.status(500).send("An error occurred while searching");
+  }
 };
+
 const returnSearch = async (req, res) => {
   try {
     const search = await fetchSearchArtist();
@@ -94,5 +112,5 @@ module.exports = {
   returnName,
   returnImage,
   returnSearch,
-  fetchSearchArtist
+  fetchSearchArtist,
 };
