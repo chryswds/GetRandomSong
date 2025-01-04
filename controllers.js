@@ -73,8 +73,20 @@ const returnSearch = async (req, res) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
     <title>ARTIST</title><body>
+
     <div class="container">
       <div class="center">
+      <form method="GET" action="/artist">
+          <label for="searchValue">Search Artist</label>
+          <input
+            type="searchValue"
+            id="searchValue"
+            name="searchValue"
+            type="text"
+            placeholder="Search Artist"
+          />
+          <button type="submit">Search</button>
+        </form>
         <p class="artist">${name.name}</p>
         <img class="img" src="${imgURL}"/>
       </div>
