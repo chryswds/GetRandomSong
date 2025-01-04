@@ -77,7 +77,7 @@ const returnSearch = async (req, res) => {
     <div class="container">
       <div class="center">
       <form method="GET" action="/artist">
-          <label for="searchValue">Search Artist</label>
+          
           <input
             type="searchValue"
             id="searchValue"
