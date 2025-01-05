@@ -76,6 +76,9 @@ const returnSearch = async (req, res) => {
 
     <div class="container">
       <div class="center">
+      <form method="GET" action="/">
+      <button class="button" type="submit">Back to main page</button>
+      </form>
       <form method="GET" action="/artist">
           
           <input
