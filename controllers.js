@@ -67,7 +67,7 @@ const returnSearch = async (req, res) => {
     const dataItems = await searchArtist(req, res);
     for (const name of dataItems) {
       const imgURL = await returnImage(req, res);
-      const albumsNames = await returnAlbumName(req, res);
+      const albumsNames = await returnAlbuns(req, res);
       res.send(`<html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -118,17 +118,6 @@ const returnID = async (req, res) => {
   }
 };
 
-const returnAlbumName = async (req, res) => {
-  try {
-    const album = await returnAlbum(req, res);
-    for (const name of album) {
-      console.log(name.name);
-      return name.name;
-    }
-  } catch (error) {
-    res.json({ error: error.message });
-  }
-};
 const fetchArtist = async (req, res) => {
   const artistID = await returnID(req, res);
 
@@ -163,27 +152,51 @@ const returnImage = async (req, res) => {
   }
 };
 
-const returnAlbum = async (req, res) => {
-  const id = await returnID(req, res);
-
-  if (!id) {
-    return res.status(400).send("No ID found");
-  }
-
+const returnAlbuns = async (req, res) => {
   try {
-    const response = fetch(`https://api.spotify.com/v1/artists/${id}/albums`, {
-      headers: {
-        AUTHORIZATION: `Bearer ` + (await userToken()),
-        "Content-Type": "application/json",
-      },
-    });
+    const albums = await fetchArtist(req, res);
+    const allAlbums = albums.items;
+    for (const alb of allAlbums) {
+      console.log(alb.name);
+      return alb.name;
+    }
   } catch (error) {
-    console.error("Error searching for artist ID: ", error);
-    res.status(500).send("An error occurred while searching ID");
+    res.json({ error: error.message });
   }
-  const album = (await response).json();
-  return album.albums.items;
 };
+
+// const returnAlbum = async (req, res) => {
+//   const id = await returnID(req, res);
+
+//   if (!id) {
+//     return res.status(400).send("No ID found");
+//   }
+
+//   try {
+//     const response = fetch(`https://api.spotify.com/v1/artists/${id}/albums`, {
+//       headers: {
+//         AUTHORIZATION: `Bearer ` + (await userToken()),
+//         "Content-Type": "application/json",
+//       },
+//     });
+//   } catch (error) {
+//     console.error("Error searching for artist ID: ", error);
+//     res.status(500).send("An error occurred while searching ID");
+//   }
+//   const album = await response.json();
+//   return album.albums.items;
+// };
+// const returnAlbumName = async (req, res) => {
+//   try {
+//     const album = await returnAlbum(req, res);
+//     for (const name of album) {
+//       console.log(name.name);
+//       return name.name;
+//     }
+//   } catch (error) {
+//     res.json({ error: error.message });
+//   }
+// };
 
 module.exports = {
   mainPage,
