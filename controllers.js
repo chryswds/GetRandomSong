@@ -67,6 +67,7 @@ const returnSearch = async (req, res) => {
     const dataItems = await searchArtist(req, res);
     for (const name of dataItems) {
       const imgURL = await returnImage(req, res);
+      const albumsNames = await returnAlbumName(req, res);
       res.send(`<html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -94,6 +95,7 @@ const returnSearch = async (req, res) => {
         </form>
         <p class="artist">${name.name}</p>
         <img class="img" src="${imgURL}"/>
+        <p>${albumsNames}</p>
       </div>
     </div>
     </body>
@@ -110,6 +112,18 @@ const returnID = async (req, res) => {
     for (const ID of dataItems) {
       console.log(ID.id);
       return ID.id;
+    }
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
+
+const returnAlbumName = async (req, res) => {
+  try {
+    const album = await returnAlbum(req, res);
+    for (const name of album) {
+      console.log(name.name);
+      return name.name;
     }
   } catch (error) {
     res.json({ error: error.message });
@@ -152,7 +166,7 @@ const returnImage = async (req, res) => {
 const returnAlbum = async (req, res) => {
   const id = await returnID(req, res);
 
-  if (!artistID) {
+  if (!id) {
     return res.status(400).send("No ID found");
   }
 
@@ -168,7 +182,7 @@ const returnAlbum = async (req, res) => {
     res.status(500).send("An error occurred while searching ID");
   }
   const album = (await response).json();
-  return album;
+  return album.albums.items;
 };
 
 module.exports = {
