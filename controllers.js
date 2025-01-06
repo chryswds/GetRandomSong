@@ -115,7 +115,6 @@ const returnID = async (req, res) => {
     res.json({ error: error.message });
   }
 };
-
 const fetchArtist = async (req, res) => {
   const artistID = await returnID(req, res);
 
@@ -139,7 +138,6 @@ const fetchArtist = async (req, res) => {
     res.status(500).send("An error occurred while searching ID");
   }
 };
-
 const returnImage = async (req, res) => {
   try {
     const artist = await fetchArtist(req, res);
@@ -149,6 +147,28 @@ const returnImage = async (req, res) => {
   } catch (error) {
     res.json({ error: error.message });
   }
+};
+
+const returnAlbum = async (req, res) => {
+  const id = await returnID(req, res);
+
+  if (!artistID) {
+    return res.status(400).send("No ID found");
+  }
+
+  try {
+    const response = fetch(`https://api.spotify.com/v1/artists/${id}/albums`, {
+      headers: {
+        AUTHORIZATION: `Bearer ` + (await userToken()),
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (error) {
+    console.error("Error searching for artist ID: ", error);
+    res.status(500).send("An error occurred while searching ID");
+  }
+  const album = (await response).json();
+  return album;
 };
 
 module.exports = {
