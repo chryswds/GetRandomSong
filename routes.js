@@ -8,4 +8,6 @@ routes.get("/artist", controllers.returnSearch);
 
 routes.get("/image", controllers.returnImage);
 
+routes.get("/album", controllers.returnAlbuns);
+
 module.exports = routes;

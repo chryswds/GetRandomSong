@@ -65,9 +65,9 @@ const searchArtist = async (req, res) => {
 const returnSearch = async (req, res) => {
   try {
     const dataItems = await searchArtist(req, res);
+    
     for (const name of dataItems) {
       const imgURL = await returnImage(req, res);
-      const albumsNames = await returnAlbuns(req, res);
       res.send(`<html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -95,7 +95,9 @@ const returnSearch = async (req, res) => {
         </form>
         <p class="artist">${name.name}</p>
         <img class="img" src="${imgURL}"/>
-        <p>${albumsNames}</p>
+        <form method="GET" action="/album">
+      <button class="button" type="submit">See albums</button>
+      </form>
       </div>
     </div>
     </body>
@@ -203,4 +205,5 @@ module.exports = {
   userToken,
   returnImage,
   returnSearch,
+  returnAlbuns,
 };
