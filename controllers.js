@@ -65,7 +65,7 @@ const searchArtist = async (req, res) => {
 const returnSearch = async (req, res) => {
   try {
     const dataItems = await searchArtist(req, res);
-    
+
     for (const name of dataItems) {
       const imgURL = await returnImage(req, res);
       res.send(`<html lang="en">
@@ -156,7 +156,16 @@ const returnImage = async (req, res) => {
 
 const returnAlbuns = async (req, res) => {
   try {
-    const albums = await fetchArtist(req, res);
+    const id = await returnID(req, res);
+    const albums = await fetch(
+      `https://api.spotify.com/v1/artists/${id}/albums`,
+      {
+        headers: {
+          AUTHORIZATION: `Bearer ` + (await userToken()),
+          "Content-Type": "application/json",
+        },
+      }
+    );
     const allAlbums = albums.items;
     for (const alb of allAlbums) {
       console.log(alb.name);
